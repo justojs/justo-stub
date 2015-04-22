@@ -328,23 +328,12 @@ var ObjectStub = (function () {
     /**
      * Defines a response.
      *
-     * @overload Method response
-     * @param name:string   The method  name to double.
+     * @overload
+     * @param name:string   The member name: method() or @attr.
      * @param config:object The configuration object: args, value and error.
      *
-     * @overload Method indexed response
-     * @param name:string   The method name to double.
-     * @param i:number      The index.
-     * @param config:object The configuration object: args, value and error.
-     *
-     * @overload Attribute and method response
-     * @param name:string   The member name to double.
-     * @param type:string   The member type to double: attr, attribute or method.
-     * @param config:object The configuration object: args, value and error.
-     *
-     * @overload Attribute and method indexed response
-     * @param name:string   The member name to double.
-     * @param type: string  The member type to double: attr, attribute or method.
+     * @overload Indexed response
+     * @param name:string   The member name to double: method() or @attr.
      * @param i:number      The index.
      * @param config:object The configuration object: args, value and error.
      */
@@ -353,35 +342,16 @@ var ObjectStub = (function () {
         args[_key4 - 1] = arguments[_key4];
       }
 
-      var type, i, config;
+      var i, config;
 
       //(1) arguments
-      if (args.length === 0) {
-        throw new Error("A stub config expected.");
-      } else if (args.length == 1) {
-        type = "method";
-        config = args[0];
-      } else if (args.length == 2) {
-        if (typeof args[0] == "number") {
-          type = "method";
-          i = args[0];
-          config = args[1];
-        } else {
-          type = args[0];
-          config = args[1];
-        }
-      } else {
-        type = args[0];
-        i = args[1];
-        config = args[2];
+      if (args.length === 0) throw new Error("A stub config expected.");else if (args.length == 1) config = args[0];else if (args.length > 1) {
+        i = args[0];
+        config = args[1];
       }
 
       //(2) add response
-      if (type == "attr" || type == "attribute") {
-        this.respondAttribute(name, i, config);
-      } else {
-        this.respondMethod(name, i, config);
-      }
+      if (/^@/.test(name)) this.respondAttribute(name.substr(1), i, config);else if (/\(\)$/.test(name)) this.respondMethod(name.replace("()", ""), i, config);else throw new Error("Member name must be 'method()' or '@attr'. Received: " + name + ".");
     }
   }, {
     key: "respondAttribute",

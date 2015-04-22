@@ -21,7 +21,7 @@ The `stub()` function is used to create the stubs.
 
 A **function stub** represents a function with prepared responses.
 When it is called, it returns the prepared and configured response.
-The `stub()` signature to use is:
+The `stub()` overload to use is:
 
 ```
 stub() : function
@@ -30,7 +30,7 @@ stub() : function
 Example:
 
 ```
-var fn = stub();
+var sum = stub();
 ```
 
 ### API stub
@@ -38,7 +38,7 @@ var fn = stub();
 The function returned by the `stub()` function contains a property, `stub`,
 which is used to configure the stub.
 
-### Configuring response
+### Configuring responses
 
 The responses can be indexed or argued.
 
@@ -54,15 +54,14 @@ respond(numberOfCall : number, call : object)
 Example:
 
 ```
-var fn = stub();
-fn.stub.respond(0, {value: "one"});
-fn.stub.respond(1, {value: "two"});
+var sum = stub();
+sum.stub.respond(0, {value: 123});
+sum.stub.respond(1, {value: 321});
 ```
 
 #### Configuring argued responses
 
-If we want to set the response attending to the arguments passed to the function stub, we use the following
-signature:
+If we want to set the response attending to the arguments passed to the function stub, we use the following overload:
 
 ```
 respond(call : object)
@@ -72,7 +71,7 @@ Example:
 
 ```
 var sum = stub();
-sum.stub.respond({args: [], value: 0});
+sum.stub.respond({args: [], error: new Error("Arguments expected.")});
 sum.stub.respond({args: [1], value: 1});
 sum.stub.respond({args: [1, 2], value: 3});
 ```
@@ -158,7 +157,7 @@ var calcul = stub({});
 
 ### API stub
 
-The object returned by the `stub()` function is the same, but it contains a new property,
+The object returned by the `stub()` function contains a property,
 `stub`, which is used to configure the object stub.
 
 ### Configuring responses
@@ -183,13 +182,14 @@ Example:
 ```
 var calcul = stub({});
 
-calcul.stub.respond("sum", 0, {value: 1});
-calcul.stub.respond("sum", 2, {value: 2});
-calcul.stub.respond("sum", {args: [], value: 0});
-calcul.stub.respond("sum", {args: [1, 2], value: 3});
+calcul.stub.respond("sum()", 0, {value: 1});
+calcul.stub.respond("sum()", 2, {value: 2});
+calcul.stub.respond("sum()", {args: [], value: 0});
+calcul.stub.respond("sum()", {args: [1, 2], value: 3});
 ```
 
-Once we have added a response, we will see the method in the object.
+Once we have added a response, we will see the method in the object. It's **very important**
+to use parentheses after the method name.
 
 #### Configuring attributes
 
@@ -197,13 +197,11 @@ To configure an attribute response, we will use the following signature of the `
 method:
 
 ```
-respond(name : string, type : string, config : object)
-respond(name : string, type : string, i : number, config : object)
+respond(name : string, config : object)
+respond(name : string, i : number, config : object)
 ```
 
-Where the `name` parameter is the attribute name and the `type` parameter
-is used to indicate the member to double: `attr` or `attribute` for attributes
-and `method` for methods; the default value is `method`.
+Where the `name` parameter is the attribute name and this must be prefixed by an ` @`.
 The `config` parameter is the configuration:
 
 - `value` (object). The value to return.
@@ -217,13 +215,22 @@ Example:
 ```
 var user = stub({});
 
-user.stub.respond("username", "attr", {value: "usr01"});
-user.stub.respond("password", "attr", {value: "pwd"});
-user.stub.respond("status", "attr", 0, {value: "open"});
-user.stub.respond("status", "attr", 3, {value: "locked"});
+user.stub.respond("@username", {value: "usr01"});
+user.stub.respond("@password", {value: "pwd"});
+user.stub.respond("@status", 0, {value: "open"});
+user.stub.respond("@status", 3, {value: "locked"});
 
 user.username;  //user01
 user.password;  //pwd
 user.status;    //1st call: open
 user.status;    //2nd call: locked
+```
+
+To differentiate the response of a method from an attribute, with the methods
+we add `()` after the method name; with the attributes, prefix the name
+by `@`:
+
+```
+user.stub.respond("changePassword()", {args: ["newPwd"], value: true});
+user.stub.respond("@status", 0, {value: "open"})
 ```

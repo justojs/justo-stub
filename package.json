@@ -1,11 +1,11 @@
 {
   "name": "justo-stub",
-  "version": "0.1.0",
-  "description": "The stub library.",
+  "version": "0.2.0",
+  "description": "A test stub library.",
   "homepage": "http://www.justojs.org",
   "license": "MIT",
   "author": {
-    "name": "Justo.js",
+    "name": "The Justo.js Development Group",
     "email": "justojs.org@outlook.com",
     "url": "http://www.justojs.org"
   },
@@ -17,10 +17,23 @@
     }
   ],
   "keywords": [
+    "Browser test",
+    "Browser testing",
+    "io.js test",
+    "io.js testing",
     "Justo",
     "Justo.js",
+    "Node test",
+    "Node testing",
+    "Node.js test",
+    "Node.js testing",
     "Stub",
-    "Testing"
+    "Test",
+    "Test double",
+    "Test stub",
+    "Testing",
+    "Unit test",
+    "Unit testing"
   ],
   "bugs": {
     "url": "https://github.com/JustoJS/justo-stub/issues",

@@ -21,7 +21,7 @@ describe("ObjectStub", function() {
   describe("Methods", function() {
     describe("#respond()", function() {
       it("respond(name, config) - argued", function() {
-        instance.stub.respond("sum", {args: [1, 2], value: 3});
+        instance.stub.respond("sum()", {args: [1, 2], value: 3});
 
         instance.sum.must.be.instanceOf(Function);
         instance.sum.stub.constructor.name.must.be.eq("FunctionStub");
@@ -31,7 +31,7 @@ describe("ObjectStub", function() {
       });
 
       it("respond(name, config) - default", function() {
-        instance.stub.respond("sum", {value: "default"});
+        instance.stub.respond("sum()", {value: "default"});
 
         instance.sum.must.be.instanceOf(Function);
         instance.sum.stub.constructor.name.must.be.eq("FunctionStub");
@@ -41,7 +41,7 @@ describe("ObjectStub", function() {
       });
 
       it("respond(name, i, config)", function() {
-        instance.stub.respond("sum", 0, {value: 1});
+        instance.stub.respond("sum()", 0, {value: 1});
 
         instance.sum.must.be.instanceOf(Function);
         instance.sum.stub.constructor.name.must.be.eq("FunctionStub");
@@ -51,8 +51,8 @@ describe("ObjectStub", function() {
       });
 
       it("respond(name, config) - several responses for different methods", function() {
-        instance.stub.respond("sum", {value: "defaultSum"});
-        instance.stub.respond("sub", {value: "defaultSub"});
+        instance.stub.respond("sum()", {value: "defaultSum"});
+        instance.stub.respond("sub()", {value: "defaultSub"});
 
         instance.sum.must.be.instanceOf(Function);
         instance.sum.stub.constructor.name.must.be.eq("FunctionStub");
@@ -68,8 +68,8 @@ describe("ObjectStub", function() {
       });
 
       it("respond(name, config) - several responses for same method", function() {
-        instance.stub.respond("sum", {args: [], value: 0});
-        instance.stub.respond("sum", {args: [1, 2], value: 3});
+        instance.stub.respond("sum()", {args: [], value: 0});
+        instance.stub.respond("sum()", {args: [1, 2], value: 3});
 
         instance.sum.must.be.instanceOf(Function);
         instance.sum.stub.constructor.name.must.be.eq("FunctionStub");
@@ -82,8 +82,8 @@ describe("ObjectStub", function() {
     describe("Call", function() {
       describe("Indexed", function() {
         beforeEach(function() {
-          instance.stub.respond("sum", 0, {value: 1});
-          instance.stub.respond("sum", 1, {value: 2});
+          instance.stub.respond("sum()", 0, {value: 1});
+          instance.stub.respond("sum()", 1, {value: 2});
         });
 
         it("call 0", function() {
@@ -108,9 +108,9 @@ describe("ObjectStub", function() {
 
       describe("Argued", function() {
         beforeEach(function() {
-          instance.stub.respond("sum", {args: [], value: 0});
-          instance.stub.respond("sum", {args: [1], value: 1});
-          instance.stub.respond("sum", {args: [1, 2], value: 3});
+          instance.stub.respond("sum()", {args: [], value: 0});
+          instance.stub.respond("sum()", {args: [1], value: 1});
+          instance.stub.respond("sum()", {args: [1, 2], value: 3});
         });
 
         it("Call 0", function() {
@@ -135,12 +135,12 @@ describe("ObjectStub", function() {
 
       describe("Mixed", function() {
         beforeEach(function() {
-          instance.stub.respond("sum", 0, {value: "i0"});
-          instance.stub.respond("sum", 2, {value: "i2"});
-          instance.stub.respond("sum", {value: "default"});
-          instance.stub.respond("sum", {args: [], value: 0});
-          instance.stub.respond("sum", {args: [1], value: 1});
-          instance.stub.respond("sum", {args: [1, 2], value: 3});
+          instance.stub.respond("sum()", 0, {value: "i0"});
+          instance.stub.respond("sum()", 2, {value: "i2"});
+          instance.stub.respond("sum()", {value: "default"});
+          instance.stub.respond("sum()", {args: [], value: 0});
+          instance.stub.respond("sum()", {args: [1], value: 1});
+          instance.stub.respond("sum()", {args: [1, 2], value: 3});
         });
 
         it("Call #0", function() {
@@ -168,8 +168,8 @@ describe("ObjectStub", function() {
 
   describe("Attributes", function() {
     describe("#respond()", function() {
-      it("respond(name, type, config) - default", function() {
-        instance.stub.respond("count", "attr", {value: 1});
+      it("respond(name, config) - default", function() {
+        instance.stub.respond("@count", {value: 1});
 
         instance.must.have("count");
         instance.stub.properties.count.constructor.name.must.be.eq("PropertyStub");
@@ -177,9 +177,9 @@ describe("ObjectStub", function() {
         instance.stub.properties.count.responses.default.must.have({value: 1});
       });
 
-      it("respond(name, type, config) - indexed 1", function() {
-        instance.stub.respond("count", "attr", 0, {value: 1});
-        instance.stub.respond("count", "attr", 1, {value: 2});
+      it("respond(name, config) - indexed 1", function() {
+        instance.stub.respond("@count", 0, {value: 1});
+        instance.stub.respond("@count", 1, {value: 2});
 
         instance.must.have("count");
         instance.stub.properties.count.constructor.name.must.be.eq("PropertyStub");
@@ -192,9 +192,9 @@ describe("ObjectStub", function() {
 
     describe("Call", function() {
       beforeEach(function() {
-        instance.stub.respond("count", "attr", 0, {value: 1});
-        instance.stub.respond("count", "attr", 2, {value: 3});
-        instance.stub.respond("count", "attr", {value: "default"});
+        instance.stub.respond("@count", 0, {value: 1});
+        instance.stub.respond("@count", 2, {value: 3});
+        instance.stub.respond("@count", {value: "default"});
       });
 
       it("Call #0", function() {
