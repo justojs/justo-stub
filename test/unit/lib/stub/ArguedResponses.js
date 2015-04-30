@@ -1,6 +1,6 @@
 //imports
 const assert = require("assert");
-const stub = require("justo-stub");
+const stub = require("../../../../dist/es5/nodejs/justo-stub");
 const ArguedResponses = stub.ArguedResponses;
 const Response = stub.Response;
 

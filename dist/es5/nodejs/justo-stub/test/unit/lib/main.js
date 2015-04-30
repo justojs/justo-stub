@@ -1,5 +1,5 @@
 //imports
-const justo = require("justo-stub");
+const justo = require("../../../dist/es5/nodejs/justo-stub");
 const stub = justo.stub;
 
 //suite

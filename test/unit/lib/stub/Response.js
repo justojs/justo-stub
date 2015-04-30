@@ -1,5 +1,5 @@
 //imports
-const stub = require("justo-stub");
+const stub = require("../../../../dist/es5/nodejs/justo-stub");
 const Response = stub.Response;
 
 //suite
