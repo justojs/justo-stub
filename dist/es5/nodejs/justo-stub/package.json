@@ -44,7 +44,7 @@
     "url": "https://github.com/JustoJS/justo-stub.git"
   },
   "engines": {
-    "node": "*"
+    "node": ">=0.12.0"
   },
   "dependencies": {
     "vit-logger": "*"
