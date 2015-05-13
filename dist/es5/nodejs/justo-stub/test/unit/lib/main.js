@@ -8,16 +8,28 @@ describe("#stub()", function() {
 		it("stub()", function() {
 			var double = stub();
 			double.must.be.instanceOf(Function);
-			double.stub.constructor.name.must.be.eq("FunctionStub");
+			double.stub.must.be.instanceOf("FunctionStub");
 		});
 	});
 
 	describe("Object stub", function() {
-		it("stub(instance)", function() {
-			var instance = {};
-			var double = stub(instance);
-      double.must.be.same(instance);
-			double.stub.constructor.name.must.be.eq("ObjectStub");
+		var obj;
+
+		beforeEach(function() {
+			obj = {};
+		});
+
+		it("stub(obj)", function() {
+			var double = stub(obj);
+      double.must.be.same(obj);
+			double.stub.must.be.instanceOf("ObjectStub");
+		});
+
+		it("stub(obj, members)", function() {
+			var double = stub(obj, {"@time": {value: 123}});
+			double.must.be.same(obj);
+			double.stub.must.be.instanceOf("ObjectStub");
+			double.must.have("time");
 		});
 	});
 });

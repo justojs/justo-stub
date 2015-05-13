@@ -1,6 +1,6 @@
 {
   "name": "justo-stub",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A test stub library.",
   "homepage": "http://www.justojs.org",
   "license": "MIT",
@@ -57,11 +57,11 @@
     "grunt-contrib-concat": "*",
     "grunt-contrib-copy": "*",
     "grunt-contrib-jshint": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-mocha-test": "^0.12.7",
+    "grunt-mocha-test": "*",
+    "grunt-travis-lint": "*",
     "justo-assert": "*",
-    "mocha": "^2.2.4",
-    "sinon": "^1.14.1"
+    "mocha": "*",
+    "sinon": "*"
   },
   "preferGlobal": false,
   "main": "lib/index.js",

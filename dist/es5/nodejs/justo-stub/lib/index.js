@@ -12,8 +12,14 @@ Object.defineProperty(exports, "__esModule", {
 /**
  * Creates a test stub.
  *
- * @overload Function stub
+ * @overload Function stub.
  * @noparam
+ * @return function
+ *
+ * @overload Object stub.
+ * @param obj:object        The object to double.
+ * @param [members]:object  The members to double.
+ * @return ObjectStub
  */
 exports.stub = stub;
 
@@ -55,83 +61,23 @@ function createFunctionStub() {
 /**
  * Creates an object dummy.
  *
- * @param instance:object		The instance object.
+ * @param obj:object        The object to double.
+ * @param [members]:object  The members to double.
  */
-function createObjectStub(instance) {
-  Object.defineProperty(instance, "stub", { value: new ObjectStub(instance) });
-  return instance;
-}
+function createObjectStub(obj) {
+  var members = arguments[1] === undefined ? {} : arguments[1];
 
-/**
- * A response collection indexed by arguments.
- *
- * @readonly(protected) responses:Response[]	The responses.
- */
+  //(1) double
+  Object.defineProperty(obj, "stub", { value: new ObjectStub(obj) });
 
-var ArguedResponses = (function () {
-  /**
-   * Constructor.
-   */
-
-  function ArguedResponses() {
-    _classCallCheck(this, ArguedResponses);
-
-    Object.defineProperty(this, "responses", { value: [] });
+  for (var i = 0, names = Object.keys(members); i < names.length; ++i) {
+    var _name = names[i];
+    obj.stub.respond(_name, members[_name]);
   }
 
-  _createClass(ArguedResponses, [{
-    key: "length",
-
-    /**
-     * The number of responses.
-     *
-     * @private
-     * @type number
-     */
-    get: function () {
-      return this.responses.length;
-    }
-  }, {
-    key: "add",
-
-    /**
-     * @alias push
-     */
-    value: function add(res) {
-      this.responses.push(res);
-    }
-  }, {
-    key: "find",
-
-    /**
-     * Finds the response for the specified arguments.
-     * If no response is found, it returns undefined.
-     *
-     * @param args:Object[]	The arguments.
-     * @return Response
-     */
-    value: function find(args) {
-      var res;
-
-      //(1) find
-      for (var i = 0; i < this.length; ++i) {
-        var r = this.responses[i];
-
-        if (r.isResponseTo(args)) {
-          res = r;
-          break;
-        }
-      }
-
-      //(2) return
-      return res;
-    }
-  }]);
-
-  return ArguedResponses;
-})();
-
-exports.ArguedResponses = ArguedResponses;
+  //(2) return
+  return obj;
+}
 
 /**
  * Base for the callable objects.
@@ -236,70 +182,24 @@ var FunctionStub = (function (_CallableStub) {
 exports.FunctionStub = FunctionStub;
 
 /**
- * A response collection by index.
- *
- * @readonly(protected) responses	The response list.
+ * A stub for a property or attribute.
  */
 
-var IndexedResponses = (function () {
-  /**
-   * Constructor.
-   */
+var PropertyStub = (function (_CallableStub2) {
+  function PropertyStub() {
+    _classCallCheck(this, PropertyStub);
 
-  function IndexedResponses() {
-    _classCallCheck(this, IndexedResponses);
-
-    Object.defineProperty(this, "responses", { value: [] });
+    if (_CallableStub2 != null) {
+      _CallableStub2.apply(this, arguments);
+    }
   }
 
-  _createClass(IndexedResponses, [{
-    key: "length",
+  _inherits(PropertyStub, _CallableStub2);
 
-    /**
-     * The number of responses.
-     */
-    get: function () {
-      return this.responses.length;
-    }
-  }, {
-    key: "add",
+  return PropertyStub;
+})(CallableStub);
 
-    /**
-     * Adds a response in a determined position.
-     *
-     * @param i:number			The position.
-     * @param res:Response	The response to add.
-     */
-    value: function add(i, res) {
-      if (this.length == i) {
-        this.responses.push(res);
-      } else if (this.length > i) {
-        this.responses[i] = res;
-      } else {
-        for (var x = this.length; x < i; ++x) {
-          this.responses.push(undefined);
-        }
-        this.responses.push(res);
-      }
-    }
-  }, {
-    key: "find",
-
-    /**
-     * Returns the response.
-     *
-     * @param i:number	The index.
-     * @return Response
-     */
-    value: function find(i) {
-      return this.responses[i];
-    }
-  }]);
-
-  return IndexedResponses;
-})();
-
-exports.IndexedResponses = IndexedResponses;
+exports.PropertyStub = PropertyStub;
 
 /**
  * A stub for an instance object.
@@ -418,26 +318,6 @@ var ObjectStub = (function () {
 
 exports.ObjectStub = ObjectStub;
 
-/**
- * A stub for a property or attribute.
- */
-
-var PropertyStub = (function (_CallableStub2) {
-  function PropertyStub() {
-    _classCallCheck(this, PropertyStub);
-
-    if (_CallableStub2 != null) {
-      _CallableStub2.apply(this, arguments);
-    }
-  }
-
-  _inherits(PropertyStub, _CallableStub2);
-
-  return PropertyStub;
-})(CallableStub);
-
-exports.PropertyStub = PropertyStub;
-
 //imports
 var assert = require("assert");
 
@@ -517,6 +397,143 @@ var Response = (function () {
 })();
 
 exports.Response = Response;
+
+/**
+ * A response collection indexed by arguments.
+ *
+ * @readonly(protected) responses:Response[]	The responses.
+ */
+
+var ArguedResponses = (function () {
+  /**
+   * Constructor.
+   */
+
+  function ArguedResponses() {
+    _classCallCheck(this, ArguedResponses);
+
+    Object.defineProperty(this, "responses", { value: [] });
+  }
+
+  _createClass(ArguedResponses, [{
+    key: "length",
+
+    /**
+     * The number of responses.
+     *
+     * @private
+     * @type number
+     */
+    get: function () {
+      return this.responses.length;
+    }
+  }, {
+    key: "add",
+
+    /**
+     * @alias push
+     */
+    value: function add(res) {
+      this.responses.push(res);
+    }
+  }, {
+    key: "find",
+
+    /**
+     * Finds the response for the specified arguments.
+     * If no response is found, it returns undefined.
+     *
+     * @param args:Object[]	The arguments.
+     * @return Response
+     */
+    value: function find(args) {
+      var res;
+
+      //(1) find
+      for (var i = 0; i < this.length; ++i) {
+        var r = this.responses[i];
+
+        if (r.isResponseTo(args)) {
+          res = r;
+          break;
+        }
+      }
+
+      //(2) return
+      return res;
+    }
+  }]);
+
+  return ArguedResponses;
+})();
+
+exports.ArguedResponses = ArguedResponses;
+
+/**
+ * A response collection by index.
+ *
+ * @readonly(protected) responses	The response list.
+ */
+
+var IndexedResponses = (function () {
+  /**
+   * Constructor.
+   */
+
+  function IndexedResponses() {
+    _classCallCheck(this, IndexedResponses);
+
+    Object.defineProperty(this, "responses", { value: [] });
+  }
+
+  _createClass(IndexedResponses, [{
+    key: "length",
+
+    /**
+     * The number of responses.
+     */
+    get: function () {
+      return this.responses.length;
+    }
+  }, {
+    key: "add",
+
+    /**
+     * Adds a response in a determined position.
+     *
+     * @param i:number			The position.
+     * @param res:Response	The response to add.
+     */
+    value: function add(i, res) {
+      if (this.length == i) {
+        this.responses.push(res);
+      } else if (this.length > i) {
+        this.responses[i] = res;
+      } else {
+        for (var x = this.length; x < i; ++x) {
+          this.responses.push(undefined);
+        }
+        this.responses.push(res);
+      }
+    }
+  }, {
+    key: "find",
+
+    /**
+     * Returns the response.
+     *
+     * @param i:number	The index.
+     * @return Response
+     */
+    value: function find(i) {
+      return this.responses[i];
+    }
+  }]);
+
+  return IndexedResponses;
+})();
+
+exports.IndexedResponses = IndexedResponses;
 
 /**
  * A response collection.
