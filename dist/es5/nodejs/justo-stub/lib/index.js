@@ -72,7 +72,11 @@ function createObjectStub(obj) {
 
   for (var i = 0, names = Object.keys(members); i < names.length; ++i) {
     var _name = names[i];
-    obj.stub.respond(_name, members[_name]);
+    var value = members[_name];
+
+    if (typeof value != "object") value = { value: value };
+
+    obj.stub.respond(_name, value);
   }
 
   //(2) return
