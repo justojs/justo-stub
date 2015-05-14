@@ -74,7 +74,7 @@ function createObjectStub(obj) {
     var _name = names[i];
     var value = members[_name];
 
-    if (typeof value != "object") value = { value: value };
+    if (value.constructor.name != "Object") value = { value: value };
 
     obj.stub.respond(_name, value);
   }
