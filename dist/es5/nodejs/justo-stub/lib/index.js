@@ -1,14 +1,3 @@
-"use strict";
-
-var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 /**
  * Creates a test stub.
  *
@@ -21,16 +10,31 @@ Object.defineProperty(exports, "__esModule", {
  * @param [members]:object  The members to double.
  * @return ObjectStub
  */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 exports.stub = stub;
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 function stub() {
+  var double;
+
+  //(1) create dummy
+
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
   }
 
-  var double;
-
-  //(1) create dummy
   if (args.length === 0) double = createFunctionStub();else double = createObjectStub.apply(undefined, args);
 
   //(2) return dummy
@@ -65,7 +69,7 @@ function createFunctionStub() {
  * @param [members]:object  The members to double.
  */
 function createObjectStub(obj) {
-  var members = arguments[1] === undefined ? {} : arguments[1];
+  var members = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
   //(1) double
   Object.defineProperty(obj, "stub", { value: new ObjectStub(obj) });
@@ -102,27 +106,32 @@ var CallableStub = (function () {
     Object.defineProperty(this, "callCount", { value: 0, writable: true });
   }
 
+  /**
+   * A stub for a function.
+   */
+
+  /**
+   * Defines a response.
+   *
+   * @overload
+   * @param call:object	The call info: args and error or value.
+   *
+   * @overload
+   * @param i:number		The number of call.
+   * @param call:object	The call info: args and error or value.
+   */
+
   _createClass(CallableStub, [{
     key: "respond",
-
-    /**
-     * Defines a response.
-     *
-     * @overload
-     * @param call:object	The call info: args and error or value.
-     *
-     * @overload
-     * @param i:number		The number of call.
-     * @param call:object	The call info: args and error or value.
-     */
     value: function respond() {
+      var i, call, res;
+
+      //(1) arguments
+
       for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
         args[_key3] = arguments[_key3];
       }
 
-      var i, call, res;
-
-      //(1) arguments
       if (args.length == 1) {
         call = args[0];
       } else {
@@ -135,8 +144,6 @@ var CallableStub = (function () {
 
       if (typeof i == "number") this.responses.add(i, res);else this.responses.add(res);
     }
-  }, {
-    key: "call",
 
     /**
      * Calls the stub.
@@ -144,6 +151,8 @@ var CallableStub = (function () {
      * @protected
      * @param args:object[]	The arguments passed to the call.
      */
+  }, {
+    key: "call",
     value: function call(args) {
       var res;
 
@@ -153,9 +162,7 @@ var CallableStub = (function () {
 
       //(2) respond
       if (res) {
-        if (res.action == "throw") throw res.error;else {
-          return res.value;
-        }
+        if (res.action == "throw") throw res.error;else return res.value;
       } else {
         return undefined;
       }
@@ -165,52 +172,42 @@ var CallableStub = (function () {
   return CallableStub;
 })();
 
-/**
- * A stub for a function.
- */
-
 var FunctionStub = (function (_CallableStub) {
+  _inherits(FunctionStub, _CallableStub);
+
   function FunctionStub() {
     _classCallCheck(this, FunctionStub);
 
-    if (_CallableStub != null) {
-      _CallableStub.apply(this, arguments);
-    }
+    _get(Object.getPrototypeOf(FunctionStub.prototype), "constructor", this).apply(this, arguments);
   }
 
-  _inherits(FunctionStub, _CallableStub);
-
+  /**
+   * A stub for a property or attribute.
+   */
   return FunctionStub;
 })(CallableStub);
 
 exports.FunctionStub = FunctionStub;
 
-/**
- * A stub for a property or attribute.
- */
-
 var PropertyStub = (function (_CallableStub2) {
+  _inherits(PropertyStub, _CallableStub2);
+
   function PropertyStub() {
     _classCallCheck(this, PropertyStub);
 
-    if (_CallableStub2 != null) {
-      _CallableStub2.apply(this, arguments);
-    }
+    _get(Object.getPrototypeOf(PropertyStub.prototype), "constructor", this).apply(this, arguments);
   }
 
-  _inherits(PropertyStub, _CallableStub2);
-
+  /**
+   * A stub for an instance object.
+   *
+   * @readonly(protected) instance:object   The instance object to double.
+   * @readonly(protected) properties:object The doubled properties.
+   */
   return PropertyStub;
 })(CallableStub);
 
 exports.PropertyStub = PropertyStub;
-
-/**
- * A stub for an instance object.
- *
- * @readonly(protected) instance:object   The instance object to double.
- * @readonly(protected) properties:object The doubled properties.
- */
 
 var ObjectStub = (function () {
   /**
@@ -226,39 +223,40 @@ var ObjectStub = (function () {
     Object.defineProperty(this, "properties", { value: {} });
   }
 
+  //imports
+
+  /**
+   * Defines a response.
+   *
+   * @overload
+   * @param name:string   The member name: method() or @attr.
+   * @param config:object The configuration object: args, value and error.
+   *
+   * @overload Indexed response
+   * @param name:string   The member name to double: method() or @attr.
+   * @param i:number      The index.
+   * @param config:object The configuration object: args, value and error.
+   */
+
   _createClass(ObjectStub, [{
     key: "respond",
-
-    /**
-     * Defines a response.
-     *
-     * @overload
-     * @param name:string   The member name: method() or @attr.
-     * @param config:object The configuration object: args, value and error.
-     *
-     * @overload Indexed response
-     * @param name:string   The member name to double: method() or @attr.
-     * @param i:number      The index.
-     * @param config:object The configuration object: args, value and error.
-     */
     value: function respond(name) {
+      var i, config;
+
+      //(1) arguments
+
       for (var _len4 = arguments.length, args = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
         args[_key4 - 1] = arguments[_key4];
       }
 
-      var i, config;
-
-      //(1) arguments
       if (args.length === 0) throw new Error("A stub config expected.");else if (args.length == 1) config = args[0];else if (args.length > 1) {
+        ;
+
         i = args[0];
         config = args[1];
-      }
-
-      //(2) add response
+      } //(2) add response
       if (/^@/.test(name)) this.respondAttribute(name.substr(1), i, config);else if (/\(\)$/.test(name)) this.respondMethod(name.replace("()", ""), i, config);else throw new Error("Member name must be 'method()' or '@attr'. Received: " + name + ".");
     }
-  }, {
-    key: "respondAttribute",
 
     /**
      * Defines an attribute response.
@@ -268,6 +266,8 @@ var ObjectStub = (function () {
      * @param i:number      The index. If null, default response.
      * @param config:object The attribute configureation: error (object) or value (object).
      */
+  }, {
+    key: "respondAttribute",
     value: function respondAttribute(name, i, config) {
       var _this = this;
 
@@ -290,8 +290,6 @@ var ObjectStub = (function () {
       //(2) add response
       prop.respond(i, config);
     }
-  }, {
-    key: "respondMethod",
 
     /**
      * Defines a method response.
@@ -301,6 +299,8 @@ var ObjectStub = (function () {
      * @param i:number      The index. If null, default or argued response.
      * @param config:object The configuration: args, error and value.
      */
+  }, {
+    key: "respondMethod",
     value: function respondMethod(name, i, config) {
       var method;
 
@@ -321,8 +321,6 @@ var ObjectStub = (function () {
 })();
 
 exports.ObjectStub = ObjectStub;
-
-//imports
 var assert = require("assert");
 
 /**
@@ -341,7 +339,7 @@ var Response = (function () {
    */
 
   function Response() {
-    var config = arguments[0] === undefined ? {} : arguments[0];
+    var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
     _classCallCheck(this, Response);
 
@@ -356,16 +354,17 @@ var Response = (function () {
     Object.defineProperty(this, "value", { value: config.value, enumerable: true });
   }
 
-  _createClass(Response, [{
-    key: "action",
+  /**
+   * A response collection indexed by arguments.
+   *
+   * @readonly(protected) responses:Response[]	The responses.
+   */
 
-    /**
-     * The action to run: throw or return.
-     */
-    get: function () {
-      return this.error ? "throw" : "return";
-    }
-  }, {
+  /**
+   * The action to run: throw or return.
+   */
+
+  _createClass(Response, [{
     key: "isResponseTo",
 
     /**
@@ -395,18 +394,17 @@ var Response = (function () {
       //(2) return
       return res;
     }
+  }, {
+    key: "action",
+    get: function get() {
+      return this.error ? "throw" : "return";
+    }
   }]);
 
   return Response;
 })();
 
 exports.Response = Response;
-
-/**
- * A response collection indexed by arguments.
- *
- * @readonly(protected) responses:Response[]	The responses.
- */
 
 var ArguedResponses = (function () {
   /**
@@ -419,19 +417,20 @@ var ArguedResponses = (function () {
     Object.defineProperty(this, "responses", { value: [] });
   }
 
-  _createClass(ArguedResponses, [{
-    key: "length",
+  /**
+   * A response collection by index.
+   *
+   * @readonly(protected) responses	The response list.
+   */
 
-    /**
-     * The number of responses.
-     *
-     * @private
-     * @type number
-     */
-    get: function () {
-      return this.responses.length;
-    }
-  }, {
+  /**
+   * The number of responses.
+   *
+   * @private
+   * @type number
+   */
+
+  _createClass(ArguedResponses, [{
     key: "add",
 
     /**
@@ -440,8 +439,6 @@ var ArguedResponses = (function () {
     value: function add(res) {
       this.responses.push(res);
     }
-  }, {
-    key: "find",
 
     /**
      * Finds the response for the specified arguments.
@@ -450,6 +447,8 @@ var ArguedResponses = (function () {
      * @param args:Object[]	The arguments.
      * @return Response
      */
+  }, {
+    key: "find",
     value: function find(args) {
       var res;
 
@@ -466,18 +465,17 @@ var ArguedResponses = (function () {
       //(2) return
       return res;
     }
+  }, {
+    key: "length",
+    get: function get() {
+      return this.responses.length;
+    }
   }]);
 
   return ArguedResponses;
 })();
 
 exports.ArguedResponses = ArguedResponses;
-
-/**
- * A response collection by index.
- *
- * @readonly(protected) responses	The response list.
- */
 
 var IndexedResponses = (function () {
   /**
@@ -490,16 +488,19 @@ var IndexedResponses = (function () {
     Object.defineProperty(this, "responses", { value: [] });
   }
 
-  _createClass(IndexedResponses, [{
-    key: "length",
+  /**
+   * A response collection.
+   *
+   * @attr(protected) default:Response               The default response.
+   * @readonly(protected) indexed:IndexedResponses  The indexed responses.
+   * @readonly(protected) argued:ArguedResponses    The argued responses.
+   */
 
-    /**
-     * The number of responses.
-     */
-    get: function () {
-      return this.responses.length;
-    }
-  }, {
+  /**
+   * The number of responses.
+   */
+
+  _createClass(IndexedResponses, [{
     key: "add",
 
     /**
@@ -520,8 +521,6 @@ var IndexedResponses = (function () {
         this.responses.push(res);
       }
     }
-  }, {
-    key: "find",
 
     /**
      * Returns the response.
@@ -529,8 +528,15 @@ var IndexedResponses = (function () {
      * @param i:number	The index.
      * @return Response
      */
+  }, {
+    key: "find",
     value: function find(i) {
       return this.responses[i];
+    }
+  }, {
+    key: "length",
+    get: function get() {
+      return this.responses.length;
     }
   }]);
 
@@ -538,14 +544,6 @@ var IndexedResponses = (function () {
 })();
 
 exports.IndexedResponses = IndexedResponses;
-
-/**
- * A response collection.
- *
- * @attr(protected) default:Response               The default response.
- * @readonly(protected) indexed:IndexedResponses  The indexed responses.
- * @readonly(protected) argued:ArguedResponses    The argued responses.
- */
 
 var Responses = (function () {
   /**
@@ -560,16 +558,16 @@ var Responses = (function () {
     Object.defineProperty(this, "argued", { value: new ArguedResponses() });
   }
 
+  /**
+   * Returns the response.
+   *
+   * @param callCount:number  The number of call.
+   * @param args:object[]	    The arguments passed to the call.
+   * @return Response
+   */
+
   _createClass(Responses, [{
     key: "find",
-
-    /**
-     * Returns the response.
-     *
-     * @param callCount:number  The number of call.
-     * @param args:object[]	    The arguments passed to the call.
-     * @return Response
-     */
     value: function find(callCount, args) {
       var res;
 
@@ -581,8 +579,6 @@ var Responses = (function () {
       //(2) return
       return res;
     }
-  }, {
-    key: "add",
 
     /**
      * Adds a new response.
@@ -594,20 +590,23 @@ var Responses = (function () {
      * @param i:number      The index/position.
      * @param res:Response  The indexed response to add.
      */
+  }, {
+    key: "add",
     value: function add() {
+      var i, res;
+
+      //(1) arguments
+
       for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
         args[_key5] = arguments[_key5];
       }
 
-      var i, res;
-
-      //(1) arguments
       if (args.length == 1) res = args[0];else {
+        ;
+
         i = args[0];
         res = args[1];
-      }
-
-      //(2) add
+      } //(2) add
       if (i !== undefined && i !== null) {
         this.indexed.add(i, res);
       } else {

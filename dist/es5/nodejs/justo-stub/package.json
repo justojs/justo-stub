@@ -1,6 +1,6 @@
 {
   "name": "justo-stub",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "A test stub library.",
   "homepage": "http://www.justojs.org",
   "license": "MIT",
@@ -19,8 +19,6 @@
   "keywords": [
     "Browser test",
     "Browser testing",
-    "io.js test",
-    "io.js testing",
     "Justo",
     "Justo.js",
     "Node test",
@@ -36,18 +34,18 @@
     "Unit testing"
   ],
   "bugs": {
-    "url": "https://github.com/JustoJS/justo-stub/issues",
+    "url": "https://github.com/justojs/justo-stub/issues",
     "email": "justojs.org@outlook.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JustoJS/justo-stub.git"
+    "url": "https://github.com/justojs/justo-stub.git"
   },
   "engines": {
     "node": ">=0.12.0"
   },
   "dependencies": {
-    "vit-logger": "*"
+    
   },
   "peerDependencies": {},
   "devDependencies": {
