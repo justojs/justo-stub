@@ -14,7 +14,15 @@ module.exports = function(grunt) {
 
       es5: {
         files: {
-        	"build/es5/lib/index.js": "build/es5/lib/index.js"
+        	"build/es5/lib/index.js": "lib/index.js",
+          "build/es5/lib/CallableStub.js": "lib/CallableStub.js",
+          "build/es5/lib/FunctionStub.js": "lib/FunctionStub.js",
+          "build/es5/lib/PropertyStub.js": "lib/PropertyStub.js",
+          "build/es5/lib/ObjectStub.js": "lib/ObjectStub.js",
+          "build/es5/lib/Response.js": "lib/Response.js",
+          "build/es5/lib/ArguedResponses.js": "lib/ArguedResponses.js",
+          "build/es5/lib/IndexedResponses.js": "lib/IndexedResponses.js",
+          "build/es5/lib/Responses.js": "lib/Responses.js"
         }
       }
     },
@@ -25,31 +33,10 @@ module.exports = function(grunt) {
       }
     },
 
-    concat: {
-      options: {
-        separator: "\n\n"
-      },
-
-      preCompiler: {
-      	src: [
-          "lib/index.js",
-          "lib/stub/CallableStub.js",
-          "lib/stub/FunctionStub.js",
-          "lib/stub/PropertyStub.js",
-          "lib/stub/ObjectStub.js",
-          "lib/stub/Response.js",
-          "lib/stub/ArguedResponses.js",
-          "lib/stub/IndexedResponses.js",
-          "lib/stub/Responses.js"
-        ],
-      	dest: "build/es5/lib/index.js"
-      }
-    },
-
     copy: {
     	nodejs: {
     		files: [
-    		  {cwd: "build/es5/", src: ["lib/index.js"], dest: "dist/es5/nodejs/<%= pkg.name %>/", expand: true},
+    		  {cwd: "build/es5/", src: ["lib/*.js"], dest: "dist/es5/nodejs/<%= pkg.name %>/", expand: true},
     		  {src: ["package.json", "README.md"], dest: "dist/es5/nodejs/<%= pkg.name %>/", expand: true},
     		  {src: ["test/**/*.*"], dest: "dist/es5/nodejs/<%= pkg.name %>", expand: true}
     		]
@@ -107,14 +94,13 @@ module.exports = function(grunt) {
   // These plugins provide necessary tasks
   grunt.loadNpmTasks("grunt-babel");
   grunt.loadNpmTasks("grunt-contrib-clean");
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks("grunt-mocha-test");
   grunt.loadNpmTasks("grunt-travis-lint");
 
   //aliases
-  grunt.registerTask("buildes5", ["travis-lint", "jshint", "clean:es5", "concat:preCompiler", "babel:es5", "copy:nodejs"]);
+  grunt.registerTask("buildes5", ["travis-lint", "jshint", "clean:es5", "babel:es5", "copy:nodejs"]);
   grunt.registerTask("es5", ["buildes5", "mochaTest:es5"]);
 
   // Default task

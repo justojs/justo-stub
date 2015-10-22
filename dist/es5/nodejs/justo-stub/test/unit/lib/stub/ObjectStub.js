@@ -1,5 +1,5 @@
 //imports
-const justo = require("../../../../dist/es5/nodejs/justo-stub");
+const stub = require("../../../../dist/es5/nodejs/justo-stub");
 
 //suite
 describe("ObjectStub", function() {
@@ -7,7 +7,7 @@ describe("ObjectStub", function() {
 
   beforeEach(function() {
     instance = {};
-    double = justo.stub(instance);
+    double = stub(instance);
   });
 
   describe("#constructor()", function() {

@@ -1,9 +1,8 @@
 //imports
 const assert = require("assert");
 const sinon = require("sinon");
-const justo = require("../../../../dist/es5/nodejs/justo-stub");
-const stub = justo.stub;
-const FunctionStub = justo.FunctionStub;
+const stub = require("../../../../dist/es5/nodejs/justo-stub");
+const FunctionStub = require("../../../../dist/es5/nodejs/justo-stub/lib/FunctionStub");
 
 //suite
 describe("FunctionStub", function() {
