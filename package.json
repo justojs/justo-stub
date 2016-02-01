@@ -1,18 +1,17 @@
 {
   "name": "justo-stub",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "A test stub library.",
   "homepage": "http://www.justojs.org",
-  "license": "MIT",
   "author": {
-    "name": "The Justo.js Development Group",
-    "email": "justojs.org@outlook.com",
+    "name": "Justo Labs",
+    "email": "justojs@justolabs.com",
     "url": "http://www.justojs.org"
   },
   "contributors": [
     {
       "name": "Raúl G. González",
-      "email": "raulggonzalezsw@outlook.com",
+      "email": "raulggonzalez@justojs.org",
       "url": ""
     }
   ],
@@ -35,21 +34,21 @@
   ],
   "bugs": {
     "url": "https://github.com/justojs/justo-stub/issues",
-    "email": "justojs.org@outlook.com"
+    "email": "issues@justojs.org"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/justojs/justo-stub.git"
   },
   "engines": {
-    "node": ">=0.12.0"
+    "node": ">=4.0.0",
+    "npm": ">=3.0.0"
   },
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "peerDependencies": {},
   "devDependencies": {
-    "grunt": "^0.4.5",
+    "babel-preset-es2015": "*",
+    "grunt": "*",
     "grunt-babel": "*",
     "grunt-contrib-clean": "*",
     "grunt-contrib-copy": "*",
@@ -61,10 +60,9 @@
     "sinon": "*"
   },
   "preferGlobal": false,
-  "main": "lib/index.js",
+  "main": "index.js",
   "files": [
-    "lib",
-    "test"
+    "lib"
   ],
   "scripts": {
     "test": "grunt mochaTest:es5"

@@ -1,6 +1,6 @@
 //imports
-const stub = require("../../../../dist/es5/nodejs/justo-stub");
-const Response = require("../../../../dist/es5/nodejs/justo-stub/lib/Response");
+const stub = require("../../../dist/es5/nodejs/justo-stub");
+const Response = require("../../../dist/es5/nodejs/justo-stub/lib/Response").default;
 
 //suite
 describe("Response", function() {

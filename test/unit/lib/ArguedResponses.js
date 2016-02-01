@@ -1,8 +1,8 @@
 //imports
 const assert = require("assert");
-const stub = require("../../../../dist/es5/nodejs/justo-stub");
-const ArguedResponses = require("../../../../dist/es5/nodejs/justo-stub/lib/ArguedResponses");
-const Response = require("../../../../dist/es5/nodejs/justo-stub/lib/Response");
+const stub = require("../../../dist/es5/nodejs/justo-stub");
+const ArguedResponses = require("../../../dist/es5/nodejs/justo-stub/lib/ArguedResponses").default;
+const Response = require("../../../dist/es5/nodejs/justo-stub/lib/Response").default;
 
 //suite
 describe("ArguedResponses", function() {

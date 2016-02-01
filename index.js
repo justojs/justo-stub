@@ -1,6 +1,9 @@
 //imports
-import FunctionStub from "./FunctionStub";
-import ObjectStub from "./ObjectStub";
+import FunctionStub from "./lib/FunctionStub";
+import ObjectStub from "./lib/ObjectStub";
+
+//api
+module.exports = stub;
 
 /**
  * Creates a test stub.
@@ -14,7 +17,7 @@ import ObjectStub from "./ObjectStub";
  * @param [members]:object  The members to double.
  * @return ObjectStub
  */
-export default function stub(...args) {
+function stub(...args) {
   var double;
 
   //(1) create dummy

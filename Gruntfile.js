@@ -10,11 +10,14 @@ module.exports = function(grunt) {
     babel: {
       options: {
         sourceMap: false,
+        retainLines: true,
+        comments: false,
+        presets: ["es2015"]
       },
 
       es5: {
         files: {
-        	"build/es5/lib/index.js": "lib/index.js",
+        	"build/es5/index.js": "index.js",
           "build/es5/lib/CallableStub.js": "lib/CallableStub.js",
           "build/es5/lib/FunctionStub.js": "lib/FunctionStub.js",
           "build/es5/lib/PropertyStub.js": "lib/PropertyStub.js",
@@ -36,9 +39,8 @@ module.exports = function(grunt) {
     copy: {
     	nodejs: {
     		files: [
-    		  {cwd: "build/es5/", src: ["lib/*.js"], dest: "dist/es5/nodejs/<%= pkg.name %>/", expand: true},
-    		  {src: ["package.json", "README.md"], dest: "dist/es5/nodejs/<%= pkg.name %>/", expand: true},
-    		  {src: ["test/**/*.*"], dest: "dist/es5/nodejs/<%= pkg.name %>", expand: true}
+    		  {cwd: "build/es5/", src: ["index.js", "lib/*.js"], dest: "dist/es5/nodejs/<%= pkg.name %>/", expand: true},
+    		  {src: ["package.json", "README.md"], dest: "dist/es5/nodejs/<%= pkg.name %>/", expand: true}
     		]
     	}
     },
@@ -53,7 +55,7 @@ module.exports = function(grunt) {
           jshintrc: true
         },
 
-        src: ["lib/**"]
+        src: ["index.js", "lib/**"]
       },
 
       test: {
@@ -85,7 +87,8 @@ module.exports = function(grunt) {
         },
 
         src: [
-          "test/unit/**/*.js"
+          "test/unit/index.js",
+          "test/unit/lib/*.js"
         ]
       }
     }
